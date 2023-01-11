@@ -5,94 +5,103 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import MainCard from 'ui-component/cards/MainCard';
 
+const Fraction = require('fractional').Fraction
+
 // project imports
 // ==============================|| SAMPLE PAGE ||============================== //
 
-const ImportancePreferences = () => {
+const ImportancePreferences = ({ onChange }) => {
     const importanceInit = {
         'temperature, pressure': [-9, 9],
         'temperature, humidity': [-9, 9],
         'temperature, light': [-9, 9],
         'pressure, humidity': [-9, 9],
         'pressure, light': [-9, 9],
-        'humidity, light': [-9, 9]
-    };
-    const [importance, setImportance] = useState(importanceInit);
+        'humidity, light': [-9, 9],
+    }
+    const [importance, setImportance] = useState(importanceInit)
 
     const handleImportanceChange = (key, newValue) => {
         // Disable change on some situations
-        if (newValue.includes(0) || newValue[0] > 0 || newValue[1] < 0) return false;
+        if (newValue.includes(0) || newValue[0] > 0 || newValue[1] < 0) return false
 
-        setImportance({ ...importance, [key]: newValue });
-    };
+        setImportance({ ...importance, [key]: newValue })
+    }
 
-    const handleImportanceSave = () => {
-        let importanceServerData = {};
+    const handleImportanceSave = async () => {
+        let importanceServerData = {}
         for (const key of Object.keys(importance)) {
-            const value = importance[key];
-            importanceServerData[key] = Math.abs(value[0] / value[1]);
+            const value = importance[key]
+            importanceServerData[key] = Math.abs(value[0] / value[1])
         }
 
-        // @TODO: save to the server
-        console.log(importanceServerData);
-    };
+        onChange(JSON.stringify(importanceServerData))
+    }
 
     return (
         <MainCard title="Importance Preferences">
             <Box marginBottom={4}>
-                <Typography variant="h4" marginBottom={1}>
+                <Typography constiant="h4" marginBottom={1}>
                     Temperature - Pressure
                 </Typography>
                 <Slider
                     getAriaLabel={() => 'Temperature Pressure Importance'}
                     value={importance['temperature, pressure']}
-                    onChange={(_, newValue) => handleImportanceChange('temperature, pressure', newValue)}
+                    onChange={(_, newValue) =>
+                        handleImportanceChange('temperature, pressure', newValue)
+                    }
                     valueLabelDisplay="auto"
                     min={-9}
                     max={9}
                 />
             </Box>
             <Box marginBottom={4}>
-                <Typography variant="h4" marginBottom={1}>
+                <Typography constiant="h4" marginBottom={1}>
                     Temperature - Humidity
                 </Typography>
                 <Slider
                     getAriaLabel={() => 'Temperature Humidity Importance'}
                     value={importance['temperature, humidity']}
-                    onChange={(_, newValue) => handleImportanceChange('temperature, humidity', newValue)}
+                    onChange={(_, newValue) =>
+                        handleImportanceChange('temperature, humidity', newValue)
+                    }
                     valueLabelDisplay="auto"
                     min={-9}
                     max={9}
                 />
             </Box>
             <Box marginBottom={4}>
-                <Typography variant="h4" marginBottom={1}>
+                <Typography constiant="h4" marginBottom={1}>
                     Temperature - Light
                 </Typography>
                 <Slider
                     getAriaLabel={() => 'Temperature Light Importance'}
                     value={importance['temperature, light']}
-                    onChange={(_, newValue) => handleImportanceChange('temperature, light', newValue)}
+                    onChange={(_, newValue) =>
+                        handleImportanceChange('temperature, light', newValue)
+                    }
                     valueLabelDisplay="auto"
                     min={-9}
                     max={9}
                 />
             </Box>
             <Box marginBottom={4}>
-                <Typography variant="h4" marginBottom={1}>
+                <Typography constiant="h4" marginBottom={1}>
                     Pressure - Humidity
                 </Typography>
                 <Slider
-                    getAriaLabel={() => 'Pressure Humidity Importance'}
+                    getAriaLabel={() => 'Humidity Pressure Importance'}
                     value={importance['pressure, humidity']}
-                    onChange={(_, newValue) => handleImportanceChange('pressure, humidity', newValue)}
+                    onChange={(_, newValue) =>
+                        handleImportanceChange('pressure, humidity', newValue)
+                    }
                     valueLabelDisplay="auto"
                     min={-9}
                     max={9}
                 />
             </Box>
             <Box marginBottom={4}>
-                <Typography variant="h4" marginBottom={1}>
+                <Typography constiant="h4" marginBottom={1}>
                     Pressure - Light
                 </Typography>
                 <Slider
@@ -105,7 +114,7 @@ const ImportancePreferences = () => {
                 />
             </Box>
             <Box>
-                <Typography variant="h4">Humidity - Light</Typography>
+                <Typography constiant="h4">Humidity - Light</Typography>
                 <Slider
                     getAriaLabel={() => 'Humidity Light Importance'}
                     value={importance['humidity, light']}
@@ -117,12 +126,12 @@ const ImportancePreferences = () => {
             </Box>
 
             <Box textAlign="center">
-                <Button variant="contained" onClick={handleImportanceSave}>
-                    Save
+                <Button constiant="contained" onClick={handleImportanceSave}>
+                    Update
                 </Button>
             </Box>
         </MainCard>
-    );
-};
+    )
+}
 
-export default ImportancePreferences;
+export default ImportancePreferences
