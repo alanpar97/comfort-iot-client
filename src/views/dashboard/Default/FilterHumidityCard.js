@@ -41,20 +41,32 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     }
 }));
 
-const HumiditySlider = styled(Slider)(({ theme }) => ({
+const MySlider = styled(Slider)(({ theme }) => ({
     color: '#fff'
 }));
 
 // ==============================|| DASHBOARD - TOTAL INCOME LIGHT CARD ||============================== //
 
-const FilterHumidityCard = ({ isLoading }) => {
+const FilterHumidityCard = ({ isLoading, onValueChange, initialValue }) => {
     const theme = useTheme();
-    const [value, setValue] = React.useState([24, 28]);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
+    function HumiditySlider() {
+        const handleChange = (event, newValue) => {
+            onValueChange(newValue);
+        };
+      
+        return (
+          <MySlider
+            aria-label="LightFilter"
+            size="small"
+            value={initialValue}
+            onChange={handleChange}
+            valueLabelDisplay="auto"
+            marks
+            min={25}
+            max={35}
+          />
+        );
+    }
     return (
         <>
             {isLoading ? (
@@ -88,16 +100,7 @@ const FilterHumidityCard = ({ isLoading }) => {
                                         <StorefrontTwoToneIcon fontSize="inherit" />
                                     </Avatar>
                                 </ListItemAvatar>
-                                <HumiditySlider
-                                    aria-label="HumidityFilter"
-                                    size="small"
-                                    value={value}
-                                    onChange={handleChange}
-                                    valueLabelDisplay="auto"
-                                    marks
-                                    min={20}
-                                    max={30}
-                                />
+                                <HumiditySlider />
                             </ListItem>
                         </List>
                     </Box>

@@ -11,27 +11,21 @@ import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import GraphSection from './GraphSection';
 import { gridSpacing } from 'store/constant';
 
-// assets
-import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
-import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+//data
+import { LoadInitialRooms } from './data/rooms_data';
 
-// ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
+// ==============================|| DASHBOARD DEFAULT - ROOMS CARD ||============================== //
 
-const RoomsCard = ({ isLoading }) => {
+const RoomsCard = ({ isLoading, temperatureFilter, lightFilter, humidityFilter }) => {
     const theme = useTheme();
-
-    const [anchorEl, setAnchorEl] = useState(null);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
+    const [data, loading] = LoadInitialRooms("http://127.0.0.1:8087/rooms");
+    console.log(data);
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+    const filteredData = data.filter(item => temperatureFilter[0] <= item.room.temperature  && item.room.temperature <= temperatureFilter[1])
+    .filter(item => lightFilter[0] <= item.room.light && item.room.light <= lightFilter[1])
+    .filter(item => humidityFilter[0] <= item.room.humidity && item.room.humidity <= humidityFilter[1]);
     return (
         <>
             {isLoading ? (
@@ -48,150 +42,32 @@ const RoomsCard = ({ isLoading }) => {
                                 </Grid>
                             </Grid>
                             <Grid item xs={12}>
-                                <Grid container direction="column">
-                                    <Grid item>
-                                        <Grid container alignItems="center" justifyContent="space-between">
-                                            <Grid item>
-                                                <Typography variant="subtitle1" color="inherit">
-                                                    Room 1
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Grid container alignItems="center" justifyContent="space-between">
-                                                    <Grid item>
-                                                        <Typography variant="subtitle1" color="inherit">
-                                                            93.4
-                                                        </Typography>
-                                                    </Grid>
-                                                    <Grid item>
-                                                        <GraphSection />
+                                {filteredData.map((item) =>(
+                                    <Grid container direction="column">
+                                        <Grid item>
+                                            <Grid container alignItems="center" justifyContent="space-between">
+                                                <Grid item>
+                                                    <Typography variant="title1" color="inherit">
+                                                        {item.room.room_name}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item>
+                                                    <Grid container alignItems="center" justifyContent="space-between">
+                                                        <Grid item>
+                                                            <Typography variant="subtitle1" sx={{ color: theme.palette.success.dark}}>
+                                                                {item.room.temperature}
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid item>
+                                                            <GraphSection />
+                                                        </Grid>
                                                     </Grid>
                                                 </Grid>
                                             </Grid>
                                         </Grid>
+                                        <Divider sx={{ my: 1.5 }} />
                                     </Grid>
-                                    <Grid item>
-                                        <Typography variant="subtitle2" sx={{ color: 'success.dark' }}>
-                                            10% More Comfortable
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                                <Divider sx={{ my: 1.5 }} />
-                                <Grid container direction="column">
-                                    <Grid item>
-                                        <Grid container alignItems="center" justifyContent="space-between">
-                                            <Grid item>
-                                                <Typography variant="subtitle1" color="inherit">
-                                                    Room 2
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Grid container alignItems="center" justifyContent="space-between">
-                                                    <Grid item>
-                                                        <Typography variant="subtitle1" color="inherit">
-                                                            88.3
-                                                        </Typography>
-                                                    </Grid>
-                                                    <Grid item>
-                                                        <GraphSection />
-                                                    </Grid>
-                                                </Grid>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item>
-                                        <Typography variant="subtitle2" sx={{ color: theme.palette.orange.dark }}>
-                                            10% Less Comfortable
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                                <Divider sx={{ my: 1.5 }} />
-                                <Grid container direction="column">
-                                    <Grid item>
-                                        <Grid container alignItems="center" justifyContent="space-between">
-                                            <Grid item>
-                                                <Typography variant="subtitle1" color="inherit">
-                                                    Room 3
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Grid container alignItems="center" justifyContent="space-between">
-                                                    <Grid item>
-                                                        <Typography variant="subtitle1" color="inherit">
-                                                            85.7
-                                                        </Typography>
-                                                    </Grid>
-                                                    <Grid item>
-                                                        <GraphSection />
-                                                    </Grid>
-                                                </Grid>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item>
-                                        <Typography variant="subtitle2" sx={{ color: theme.palette.success.dark }}>
-                                            10% More Comfortable
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                                <Divider sx={{ my: 1.5 }} />
-                                <Grid container direction="column">
-                                    <Grid item>
-                                        <Grid container alignItems="center" justifyContent="space-between">
-                                            <Grid item>
-                                                <Typography variant="subtitle1" color="inherit">
-                                                    Room 4
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Grid container alignItems="center" justifyContent="space-between">
-                                                    <Grid item>
-                                                        <Typography variant="subtitle1" color="inherit">
-                                                            77.9
-                                                        </Typography>
-                                                    </Grid>
-                                                    <Grid item>
-                                                        <GraphSection />
-                                                    </Grid>
-                                                </Grid>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item>
-                                        <Typography variant="subtitle2" sx={{ color: theme.palette.orange.dark }}>
-                                            10% Less Comfortable
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                                <Divider sx={{ my: 1.5 }} />
-                                <Grid container direction="column">
-                                    <Grid item>
-                                        <Grid container alignItems="center" justifyContent="space-between">
-                                            <Grid item>
-                                                <Typography variant="subtitle1" color="inherit">
-                                                    Room 5
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Grid container alignItems="center" justifyContent="space-between">
-                                                    <Grid item>
-                                                        <Typography variant="subtitle1" color="inherit">
-                                                            75.6
-                                                        </Typography>
-                                                    </Grid>
-                                                    <Grid item>
-                                                        <GraphSection />
-                                                    </Grid>
-                                                </Grid>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item>
-                                        <Typography variant="subtitle2" sx={{ color: theme.palette.orange.dark }}>
-                                            10% Less Comfortable
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
+                                ))}
                             </Grid>
                         </Grid>
                     </CardContent>

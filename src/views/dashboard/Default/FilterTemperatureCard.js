@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import * as React from 'react';
+import React, { useState } from 'react';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -40,46 +40,35 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     }
 }));
 
-const marks = [
-    {
-        value: 20,
-        label: '20°C'
-    },
-    {
-        value: 22,
-        label: '22°C'
-    },
-    {
-        value: 24,
-        label: '24°C'
-    },
-    {
-        value: 26,
-        label: '26°C'
-    },
-    {
-        value: 28,
-        label: '28°C'
-    },
-    {
-        value: 30,
-        label: '30°C'
-    }
-];
-
-const TemperatureSlider = styled(Slider)(({ theme }) => ({
+const MySlider = styled(Slider)(({ theme }) => ({
     color: '#fff'
 }));
 
 // ==============================|| DASHBOARD - TEMPERTURE CARD ||============================== //
 
-const FilterTemperatureCard = ({ isLoading }) => {
+const FilterTemperatureCard = ({ isLoading, onValueChange, initialValue }) => {
     const theme = useTheme();
-    const [value, setValue] = React.useState([24, 28]);
+    function TemperatureSlider() {
+      
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+        const handleChange = (event, newValue) => {
+            onValueChange(newValue);
+        };
+      
+        return (
+          <MySlider
+            aria-label="TemperatureFilter"
+            size="small"
+            value={initialValue}
+            onChange={handleChange}
+            valueLabelDisplay="auto"
+            marks
+            min={20}
+            max={30}
+            color="secondary"
+          />
+        );
+    }
     return (
         <>
             {isLoading ? (
@@ -113,17 +102,7 @@ const FilterTemperatureCard = ({ isLoading }) => {
                                         <TableChartOutlinedIcon fontSize="inherit" />
                                     </Avatar>
                                 </ListItemAvatar>
-                                <TemperatureSlider
-                                    aria-label="TemperatureFilter"
-                                    size="small"
-                                    value={value}
-                                    onChange={handleChange}
-                                    valueLabelDisplay="auto"
-                                    marks
-                                    min={20}
-                                    max={30}
-                                    color="secondary"
-                                />
+                                <TemperatureSlider/>
                             </ListItem>
                         </List>
                     </Box>

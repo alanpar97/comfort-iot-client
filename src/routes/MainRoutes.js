@@ -6,7 +6,7 @@ import Loadable from 'ui-component/Loadable';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
-const PreferencesDefault = Loadable(lazy(() => import('views/settings/Default')));
+const PreferencesDefault = Loadable(lazy(() => import('views/settings')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 

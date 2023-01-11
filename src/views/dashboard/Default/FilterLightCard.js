@@ -2,18 +2,20 @@ import PropTypes from 'prop-types';
 import * as React from 'react';
 
 // material-ui
-import { useTheme, styled } from '@mui/material/styles';
-import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography, Stack } from '@mui/material';
+import { styled, useTheme } from '@mui/material/styles';
+import { Avatar, Box, List, ListItem, ListItemAvatar, Typography } from '@mui/material';
 import Slider, { SliderThumb } from '@mui/material/Slider';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard';
 
 // assets
-import StorefrontTwoToneIcon from '@mui/icons-material/Water';
+import TableChartOutlinedIcon from '@mui/icons-material/Lightbulb';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
+    backgroundColor: theme.palette.secondary.dark,
+    color: theme.palette.secondary.light,
     overflow: 'hidden',
     position: 'relative',
     '&:after': {
@@ -21,7 +23,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
         position: 'absolute',
         width: 210,
         height: 210,
-        background: `linear-gradient(210.04deg, #009688 -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
+        background: `linear-gradient(210.04deg, ${theme.palette.secondary[200]} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
         borderRadius: '50%',
         top: -30,
         right: -180
@@ -31,27 +33,40 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
         position: 'absolute',
         width: 210,
         height: 210,
-        background: `linear-gradient(140.9deg, #009688 -14.02%, rgba(144, 202, 249, 0) 70.50%)`,
+        background: `linear-gradient(140.9deg, ${theme.palette.secondary[200]} -14.02%, rgba(144, 202, 249, 0) 77.58%)`,
         borderRadius: '50%',
         top: -160,
         right: -130
     }
 }));
 
-// ==============================|| DASHBOARD - TOTAL INCOME LIGHT CARD ||============================== //
-
-const HumiditySlider = styled(Slider)(({ theme }) => ({
-    color: '#009688'
+const MySlider = styled(Slider)(({ theme }) => ({
+    color: '#fff'
 }));
 
-const PreferenceHumidityCard = ({ isLoading }) => {
+// ==============================|| DASHBOARD - TEMPERTURE CARD ||============================== //
+
+const FilterLightCard = ({ isLoading, onValueChange, initialValue }) => {
     const theme = useTheme();
-    const [value, setValue] = React.useState(25);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
+    function LightSlider() {
+        const handleChange = (event, newValue) => {
+            onValueChange(newValue);
+        };
+      
+        return (
+          <MySlider
+            aria-label="LightFilter"
+            size="small"
+            value={initialValue}
+            onChange={handleChange}
+            valueLabelDisplay="auto"
+            marks
+            min={70}
+            max={80}
+            color="primary"
+          />
+        );
+    }
     return (
         <>
             {isLoading ? (
@@ -61,7 +76,7 @@ const PreferenceHumidityCard = ({ isLoading }) => {
                     <Box sx={{ p: 3 }}>
                         <List sx={{ py: 0 }}>
                             <ListItem alignItems="flex-end" disableGutters sx={{ py: 0 }}>
-                                <Typography>Set Humidity Preference</Typography>
+                                <Typography>Filter by Light Intensity</Typography>
                             </ListItem>
                             <ListItem alignItems="center" disableGutters sx={{ py: 0 }}>
                                 <ListItemAvatar>
@@ -70,24 +85,14 @@ const PreferenceHumidityCard = ({ isLoading }) => {
                                         sx={{
                                             ...theme.typography.commonAvatar,
                                             ...theme.typography.largeAvatar,
-                                            backgroundColor: '#fff',
-                                            color: '#009688'
+                                            backgroundColor: theme.palette.secondary.dark,
+                                            color: '#fff'
                                         }}
                                     >
-                                        <StorefrontTwoToneIcon fontSize="inherit" />
+                                        <TableChartOutlinedIcon fontSize="inherit" />
                                     </Avatar>
                                 </ListItemAvatar>
-                                <HumiditySlider
-                                    aria-label="Temperature"
-                                    size="small"
-                                    value={value}
-                                    onChange={handleChange}
-                                    valueLabelDisplay="auto"
-                                    marks
-                                    min={20}
-                                    max={30}
-                                    color="secondary"
-                                />
+                                <LightSlider/>
                             </ListItem>
                         </List>
                     </Box>
@@ -97,8 +102,8 @@ const PreferenceHumidityCard = ({ isLoading }) => {
     );
 };
 
-PreferenceHumidityCard.propTypes = {
+FilterLightCard.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default PreferenceHumidityCard;
+export default FilterLightCard;

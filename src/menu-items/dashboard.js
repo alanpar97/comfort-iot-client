@@ -18,14 +18,6 @@ const dashboard = {
             url: '/dashboard/default',
             icon: icons.IconSchool,
             breadcrumbs: false
-        },
-        {
-            id: 'settings',
-            title: 'Settings',
-            type: 'item',
-            url: '/dashboard/settings',
-            icon: icons.IconSettings,
-            breadcrumbs: false
         }
     ]
 };
