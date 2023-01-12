@@ -18,7 +18,6 @@ const RoomsCard = ({ data, loading, temperatureFilter, lightFilter, humidityFilt
 
     useEffect(() => {
         if (data) {
-            console.log(data)
             const filteredData = data
                 .filter(
                     (item) =>

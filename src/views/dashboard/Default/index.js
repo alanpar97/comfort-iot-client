@@ -46,9 +46,11 @@ const Dashboard = () => {
     }
 
     const handleImportanceChange = async (preferences) => {
+        const formData = new FormData()
+        formData.append('ahp_object', preferences)
         const response = await fetch('http://127.0.0.1:8087/rooms', {
             method: 'POST',
-            body: { ahp_object: preferences },
+            body: formData,
         })
         const json = await response.json()
         setLoading(false)
